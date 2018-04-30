@@ -1,0 +1,35 @@
+{
+  "name": "node_monitoring_example",
+  "version": "1.0.0",
+  "description": "An example how to trace an app",
+  "main": "server.js",
+  "scripts": {
+    "start": "npm run serve",
+    "build": "tsc",
+    "debug": "npm run build && npm run serve-debug",
+    "watch-ts": "tsc -w",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tslint": "tslint -c tslint.json -p tsconfig.json",
+    "watch": "nodemon dist/server.js",
+    "serve": "node ./dist/server.js",
+    "serve-debug": "nodemon --inspect dist/server.js",
+    "watch-debug": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run serve-debug\""
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/express": "^4.11.1",
+    "@types/node": "^8.5.5",
+    "@types/zipkin-context-cls": "^0.11.1",
+    "nodemon": "^1.17.3",
+    "ts-lint": "^4.5.1",
+    "typescript": "^2.8.3"
+  },
+  "dependencies": {
+    "express": "^4.16.3",
+    "zipkin": "^0.12.0",
+    "zipkin-context-cls": "^0.11.0",
+    "zipkin-instrumentation-express": "^0.12.0",
+    "zipkin-transport-http": "^0.12.0"
+  }
+}
