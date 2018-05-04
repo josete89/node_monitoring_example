@@ -1,15 +1,18 @@
 import { Observable } from 'rxjs';
 import request from 'request-promise-native'
 import { Gauge } from 'prom-client'
+const uuid = require('uuid-random')
 
-var options = {
-    headers:{
-        'x-correlation-id':'1'
-    }
-}
+
 
 export let httpCall = (url:string,gauge:Gauge):Observable<any> => {
     const obs = Observable.create((observer:any) => {
+        var options = {
+            headers:{
+                'x-correlation-id':uuid()
+            }
+        }
+        console.log(JSON.stringify(options))
         gauge.inc()
         request(url,options).then((data)=>{
             observer.next(data)
