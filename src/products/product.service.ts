@@ -25,8 +25,10 @@ export let filterById = (id:string):Observable<any> => {
 }
 
 let fetchAdditionaInfo = (product:any):Observable<any> => {
-    const images = network.httpCall("https://httpbin.org/ip",getImageGauge)
-    const inventory = network.httpCall("https://httpbin.org/ip",getInventoryGauge)
+    const imagesURL = process.env.IMAGES_SERVICE || "https://httpbin.org/ip"
+    const inventoryURL = process.env.INVENTORY_SERVICE || "https://httpbin.or/ip"
+    const images = network.httpCall(imagesURL,getImageGauge)
+    const inventory = network.httpCall(inventoryURL,getInventoryGauge)
     
     const combined = combineLatest([images,inventory],(img:any,inv:any)=>{ 
         product.images = img

@@ -10,7 +10,8 @@ export let httpCall = (url:string,gauge:Gauge):Observable<any> => {
         var options = {
             headers:{
                 'x-correlation-id':uuid()
-            }
+            },
+            json:true
         }
         console.log(JSON.stringify(options))
         gauge.inc()

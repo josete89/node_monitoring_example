@@ -8,7 +8,7 @@ import zipkinMiddleware from 'zipkin-instrumentation-express'
 const ctxImpl = new CLSContext('zipkin');
 const localServiceName = 'product-backend';
 
-const zipkinBaseUrl = 'http://localhost:9411';
+const zipkinBaseUrl = process.env.ZIPKIN_URL || 'http://localhost:9411';
   
 const recorder = new BatchRecorder({
 logger: new HttpLogger({
