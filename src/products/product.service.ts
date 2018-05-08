@@ -5,8 +5,8 @@ import * as prom from '../metrics/metrics'
 
 const objects = require("../../resources/product.json")
 
-let getImageGauge = new prom.Gauge({ name: 'Image', help: 'Get an image from a product' })
-let getInventoryGauge = new prom.Gauge({ name: 'Inventorty', help: 'Get the inventory from a product' })
+let getImageGauge = new prom.Counter({ name: 'Image', help: 'Get an image from a product' })
+let getInventoryGauge = new prom.Counter({ name: 'Inventory', help: 'Get the inventory from a product' })
 
 export let retriveAll =  ():Observable<any> => {
     let obs = objects.map( fetchAdditionaInfo )
@@ -25,10 +25,11 @@ export let filterById = (id:string):Observable<any> => {
 }
 
 let fetchAdditionaInfo = (product:any):Observable<any> => {
-    const imagesURL = process.env.IMAGES_SERVICE || "https://httpbin.org/ip"
-    const inventoryURL = process.env.INVENTORY_SERVICE || "https://httpbin.or/ip"
-    const images = network.httpCall(imagesURL,getImageGauge)
-    const inventory = network.httpCall(inventoryURL,getInventoryGauge)
+    const imagesURL = process.env.IMAGES_SERVICE
+    const inventoryURL = process.env.INVENTORY_SERVICE
+
+    const images = network.httpCall(`${imagesURL}/products/${product.id}/images`,'images-service',getImageGauge)
+    const inventory = network.httpCall(`${inventoryURL}/inventory/${product.id}`,'inventory-service',getInventoryGauge)
     
     const combined = combineLatest([images,inventory],(img:any,inv:any)=>{ 
         product.images = img

@@ -8,7 +8,7 @@ import zipkinMiddleware from 'zipkin-instrumentation-express'
 const ctxImpl = new CLSContext('zipkin');
 const localServiceName = 'product-backend';
 
-const zipkinBaseUrl = process.env.ZIPKIN_URL || 'http://localhost:9411';
+const zipkinBaseUrl = process.env.ZIPKIN_URL;
   
 const recorder = new BatchRecorder({
 logger: new HttpLogger({
@@ -16,10 +16,11 @@ logger: new HttpLogger({
     jsonEncoder: jsonEncoder.JSON_V2
 })
 });
+const tracer = new Tracer({ctxImpl, recorder, localServiceName});
 
 export let setupTracer = (app:Express) => {
-    const tracer = new Tracer({ctxImpl, recorder, localServiceName});
     let middleware = zipkinMiddleware.expressMiddleware
     app.use(middleware({tracer}));
 }
 
+export let zkTracer = tracer

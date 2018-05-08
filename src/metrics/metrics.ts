@@ -8,4 +8,4 @@ export let route = (req: Request, res: Response) => {
     res.set('Content-Type', prom.register.contentType).send(prom.register.metrics())
 }
 
-export let Gauge = prom.Gauge
+export let Counter = prom.Counter

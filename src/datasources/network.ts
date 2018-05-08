@@ -1,21 +1,25 @@
 import { Observable } from 'rxjs';
 import request from 'request-promise-native'
-import { Gauge } from 'prom-client'
+import { Counter } from 'prom-client'
+import wrapRequest from 'zipkin-instrumentation-request'
+import * as recoder from '../recorder/recorder'
 const uuid = require('uuid-random')
 
 
 
-export let httpCall = (url:string,gauge:Gauge):Observable<any> => {
+export let httpCall = (url:string,serviceName:string,counter:Counter):Observable<any> => {
     const obs = Observable.create((observer:any) => {
         var options = {
-            headers:{
-                'x-correlation-id':uuid()
-            },
             json:true
         }
-        console.log(JSON.stringify(options))
-        gauge.inc()
-        request(url,options).then((data)=>{
+
+        const tracer = recoder.zkTracer
+        const remoteServiceName = serviceName
+        const zipkinRequest = wrapRequest(request,{tracer});
+        
+        counter.inc()
+
+        zipkinRequest(url,options).then((data)=>{
             observer.next(data)
             observer.complete()
         }).catch((err)=>{
