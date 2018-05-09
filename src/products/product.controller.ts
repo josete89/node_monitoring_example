@@ -3,8 +3,8 @@ import * as service from './product.service'
 import { Request, Response } from "express";
 import * as prom from '../metrics/metrics'
 
-let getProductsCounter = new prom.Counter({ name: 'Products', help: 'Get all products' })
-let getProductByIdCounter = new prom.Counter({ name: 'ProductById', help: 'Get a product by id' })
+let getProductsCounter = new prom.Counter({ name: 'total_requests_all_products', help: 'Get all products' })
+let getProductByIdCounter = new prom.Counter({ name: 'total_requests_product_by_id', help: 'Get a product by id' })
 
 let errorHandling = (res:Response) => (err:any) => {
     res.send(err).status(500)

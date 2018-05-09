@@ -1,10 +1,14 @@
 [
     {
-        "id":"C77124",
-        "name":"Superstar"
+        "articleNumber":"C77124",
+        "name":"Superstar",
+        "description":"La zapatilla adidas Superstar se lanzó al mercado en 1969 y pronto se convirtió en una leyenda. Esta versión presenta una parte superior de piel granulada. La mítica puntera de goma ofrece una gran resistencia al desgaste.",
+        "features":["Parte superior de piel granulada","Suela de goma cosida; forro de piel sintética"]
     },
     {
-        "id":"C77125",
-        "name":"Superstar"
+        "articleNumber":"C77125",
+        "name":"Superstar Light",
+        "description":"El legado de un maestro del tenis. La Superstart Light ha sido un icono de las canchas de tenis y del estilo urbano. Esta versión conserva la parte superior de piel granulada y la silueta minimalista del modelo original de 1972.",
+        "features":["Parte superior de piel de primera calidad","Suela de goma cosida","Plantilla OrthoLite que expulsa el sudor y la humedad y mantiene los pies secos"]
     }
 ]

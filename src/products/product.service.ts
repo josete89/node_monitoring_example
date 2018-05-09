@@ -5,8 +5,8 @@ import * as prom from '../metrics/metrics'
 
 const objects = require("../../resources/product.json")
 
-let getImageGauge = new prom.Counter({ name: 'Image', help: 'Get an image from a product' })
-let getInventoryGauge = new prom.Counter({ name: 'Inventory', help: 'Get the inventory from a product' })
+let getImageCounter= new prom.Counter({ name: 'requests_to_img_svc', help: 'Get an image from a product' })
+let getInventoryCounter= new prom.Counter({ name: 'requests_to_inventory', help: 'Get the inventory from a product' })
 
 export let retriveAll =  ():Observable<any> => {
     let obs = objects.map( fetchAdditionaInfo )
@@ -15,7 +15,7 @@ export let retriveAll =  ():Observable<any> => {
 }
 
 export let filterById = (id:string):Observable<any> => {
-    let filtered =  objects.filter( (x:any) => x.id == id)
+    let filtered =  objects.filter( (x:any) => x.articleNumber == id)
     let product = filtered.length == 1 ? filtered[0]:null
     if (product){
         let result = fetchAdditionaInfo(product)
@@ -27,9 +27,9 @@ export let filterById = (id:string):Observable<any> => {
 let fetchAdditionaInfo = (product:any):Observable<any> => {
     const imagesURL = process.env.IMAGES_SERVICE
     const inventoryURL = process.env.INVENTORY_SERVICE
-
-    const images = network.httpCall(`${imagesURL}/products/${product.id}/images`,'images-service',getImageGauge)
-    const inventory = network.httpCall(`${inventoryURL}/inventory/${product.id}`,'inventory-service',getInventoryGauge)
+    const id = product.articleNumber
+    const images = network.httpCall(`${imagesURL}/products/${id}/images`,'images-service',getImageCounter)
+    const inventory = network.httpCall(`${inventoryURL}/inventory/${id}`,'inventory-service',getInventoryCounter)
     
     const combined = combineLatest([images,inventory],(img:any,inv:any)=>{ 
         product.images = img
